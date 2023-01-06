@@ -1,6 +1,6 @@
 {
-    "name": "Image Changer",
-    "description": "Extension to change image on google.com",
+    "name": "YTLite",
+    "description": "Extension to change the world",
     "version": "1.0",
     "manifest_version": 3,
     "permissions": ["storage", "tabs"],
@@ -17,14 +17,25 @@
     "web_accessible_resources": [
         {
             "resources": [
-                "asset/bookmark.png",
-                "asset/play.png",
-                "asset/delete.png",
+                "assets/bookmark.png",
+                "assets/play.png",
+                "assets/delete.png",
                 "assets/save.png"
             ],
             "matches": ["https://*.youtube.com/*"]
         }
-    ]
+    ],
+    "action": {
+        "defualt_icon": {
+            "16": "assets/ext-icon.png",
+            "24": "assets/ext-icon.png",
+            "36": "assets/ext-icon.png"
+        },
+        "default_title": "YTLite",
+        "default_popup": "popup.html"
+    }
+
+
 
 
 }
