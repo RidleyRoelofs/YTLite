@@ -1,33 +1,25 @@
 /* Style the toggle container */
 body {
-    min-width: 180px;
-    min-height: 180px;
-    background-color: #2B4593;
-    
+    min-width: 350px;
+    min-height: 300px;
+    background-color: #121212;
     
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: 15px;
-    padding-bottom: 5px;
-}
+
 .logo img {
-    width: 80px;
+    width: 100px;
+    padding-right: 20px;
 }
 .toggle-container {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-right: 20px;
 }
 
-.text {
-    color: black;
-    font-size: 16px;
-    text-align: center;
-    padding-bottom: 10px;
+* {
+    font-family: "Youtube sans", sans-serif;
 }
 
 /* Style the toggle button */
@@ -38,8 +30,8 @@ body {
     cursor: pointer;
     outline: none;
     position: relative;
-    width: 60px;
-    height: 34px;
+    width: 56px;
+    height: 30px;
     border-radius: 34px;
     transition: background-color 0.2s;
 }
@@ -81,4 +73,22 @@ body {
 
 .toggle-button.on::after {
     transform: translateX(26px);
+}
+.label {
+    color: white;
+    font-size: 16px;
+    padding-left: 20px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    padding-bottom: 25px;
+    justify-content: space-between;
+}
+
+.title {
+    color: white;
+    font-size: 18px;
+    padding-left: 20px;
 }
