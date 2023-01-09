@@ -1,0 +1,61 @@
+/* Style the toggle container */
+body {
+    min-width: 500px;
+}
+.toggle-container {
+    display: flex;
+    align-items: center;
+}
+
+/* Style the toggle button */
+.toggle-button {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    width: 60px;
+    height: 34px;
+    border-radius: 34px;
+    transition: background-color 0.2s;
+}
+
+/* Style the toggle button track */
+.toggle-button::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    bottom: 2px;
+    right: 2px;
+    background: #ddd;
+    border-radius: 32px;
+}
+
+/* Style the toggle button thumb */
+.toggle-button::after {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    bottom: 4px;
+    width: 28px;
+    background: #fff;
+    border-radius: 28px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+}
+
+/* Style the toggle button when it is turned on */
+.toggle-button.on {
+    background: #4caf50;
+}
+
+.toggle-button.on::before {
+    background: #4caf50;
+}
+
+.toggle-button.on::after {
+    transform: translateX(26px);
+}

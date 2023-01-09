@@ -1,12 +1,9 @@
-// adding a new bookmark row to the popup
-const addNewBookmark = () => {};
+// Get a reference to the toggle button
+const toggleButton = document.getElementById('toggle-button');
 
-const viewBookmarks = () => {};
+// Add a click event listener to the button
+toggleButton.addEventListener('click', () => {
+  // Toggle the "on" class on the toggle button
+  toggleButton.classList.toggle('on');
+});
 
-const onPlay = e => {};
-
-const onDelete = e => {};
-
-const setBookmarkAttributes =  () => {};
-
-document.addEventListener("DOMContentLoaded", () => {});
