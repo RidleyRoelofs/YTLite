@@ -1,10 +1,33 @@
 /* Style the toggle container */
 body {
-    min-width: 500px;
+    min-width: 180px;
+    min-height: 180px;
+    background-color: #2B4593;
+    
+    
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 15px;
+    padding-bottom: 5px;
+}
+.logo img {
+    width: 80px;
 }
 .toggle-container {
     display: flex;
     align-items: center;
+    justify-content: center;
+}
+
+.text {
+    color: black;
+    font-size: 16px;
+    text-align: center;
+    padding-bottom: 10px;
 }
 
 /* Style the toggle button */
@@ -29,7 +52,7 @@ body {
     left: 2px;
     bottom: 2px;
     right: 2px;
-    background: #ddd;
+    background: rgb(61, 60, 60);
     border-radius: 32px;
 }
 
