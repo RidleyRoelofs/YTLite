@@ -1,6 +1,6 @@
 /* Style the toggle container */
 body {
-    min-width: 350px;
+    min-width: 330px;
     min-height: 300px;
     background-color: #121212;
     
@@ -52,9 +52,9 @@ body {
 .toggle-button::after {
     content: "";
     position: absolute;
-    top: 4px;
-    left: 4px;
-    bottom: 4px;
+    top: 2px;
+    left: 2px;
+    bottom: 2px;
     width: 28px;
     background: #fff;
     border-radius: 28px;
@@ -72,7 +72,7 @@ body {
 }
 
 .toggle-button.on::after {
-    transform: translateX(26px);
+    transform: translateX(24px);
 }
 .label {
     color: white;
@@ -89,6 +89,6 @@ body {
 
 .title {
     color: white;
-    font-size: 18px;
+    font-size: 16px;
     padding-left: 20px;
 }
