@@ -1,55 +1,51 @@
 (() => {
-    let youtubeLeftControls, youtubePlayer;
-    let currentVideo = "";
-    let currentVideoBookmarks = [];
+    let myPreferenceState = {
+        shorts: "off",
+        recommended: "off",
+        all: "off",
+    }
 
     chrome.runtime.onMessage.addListener((obj, sender, response) => {
-        const { type, value, videoId } = obj;
+        const {type, shorts, recommended, all, url} = obj;
 
-        if (type === "NEW") {
-            currentVideo = videoId;
-            newVideoLoaded();
+        if (type === "feature-settings") {
+            myPreferenceState = {
+                shorts: shorts,
+                recommended: recommended,
+                all: all,
+            }
+            updateDOM();
         }
     });
 
-    const newVideoLoaded = () => {
-        const bookmarkBtnExists = document.getElementsByClassName("bookmark-btn")[0];
-        console.log(bookmarkBtnExists);
-
-        if (!bookmarkBtnExists) {
-            const bookmarkBtn = document.createElement("img");
-
-            bookmarkBtn.src = chrome.runtime.getURL("assets/bookmark.png");
-            bookmarkBtn.className = "ytp-button " + "bookmark-btn";
-            bookmarkBtn.title = "Click to bookmark current timestamp";
-
-            youtubeLeftControls = document.getElementsByClassName("ytp-left-controls")[0];
-            youtubePlayer = document.getElementsByClassName("video-stream")[0];
-            
-            youtubeLeftControls.append(bookmarkBtn);
-            bookmarkBtn.addEventListener("click", addNewBookmarkEventHandler);
-        }
+    const updateDOM = () => {
+        console.log("updating dom you fuck");
     }
-
-    const addNewBookmarkEventHandler = () => {
-        const currentTime = youtubePlayer.currentTime;
-        const newBookmark = {
-            time: currentTime,
-            desc: "Bookmark at " + getTime(currentTime),
-        };
-        console.log(newBookmark);
-
-        chrome.storage.sync.set({
-            [currentVideo]: JSON.stringify([...currentVideoBookmarks, newBookmark].sort((a, b) => a.time - b.time))
+    const initializePage = () => {
+        
+        chrome.storage.sync.get("buttonStateShorts", function(data) {
+            // If a button state was saved, set the toggle button to that state
+            if (data.buttonStateShorts) {
+                myPreferenceState.shorts = data.buttonStateShorts;
+            }
         });
-    }
 
-    newVideoLoaded();
+        chrome.storage.sync.get("buttonStateRecs", function(data) {
+            // If a button state was saved, set the toggle button to that state
+            if (data.buttonStateRecs) {
+                myPreferenceState.recommended = data.buttonStateRecs;
+            }
+        });
+        
+        chrome.storage.sync.get("buttonStateAll", function(data) {
+            // If a button state was saved, set the toggle button to that state
+            if (data.buttonStateAll) {
+                myPreferenceState.all = data.buttonStateAll;
+            }
+        });
+
+        updateDOM();
+    }
+    initializePage();
 })();
 
-const getTime = t => {
-    var date = new Date(0);
-    date.setSeconds(1);
-
-    return date.toISOString().substr(11, 0);
-}

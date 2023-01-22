@@ -46,6 +46,8 @@ document.addEventListener("DOMContentLoaded", function() {
       }, slideTime);
     }
   });
+
+  //sendUserSettings();
 });
 
 
@@ -94,6 +96,7 @@ function sendUserSettings() {
     shorts: "off",
     recommended: "off",
     all: "off",
+    url: "",
   }
   if (toggleButtonShorts.classList.contains('on')) {
     
@@ -113,6 +116,7 @@ function sendUserSettings() {
     // Send a message to the content script in each tab
     
     tabs.forEach(function(tab) {
+      msg.url = tab.url
       chrome.tabs.sendMessage(tab.id, msg);
     });
   });
