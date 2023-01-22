@@ -53,18 +53,21 @@ toggleButtonShorts.addEventListener('click', () => {
   // Toggle the "on" class on the toggle button
   toggleButtonShorts.classList.toggle('on');
   saveButtonAction(toggleButtonShorts);
+  sendUserSettings();
 });
 
 toggleButtonRecs.addEventListener('click', () => {
   // Toggle the "on" class on the toggle button
   toggleButtonRecs.classList.toggle('on');
   saveButtonAction(toggleButtonRecs);
+  sendUserSettings();
 });
 
 toggleButtonAll.addEventListener('click', () => {
   // Toggle the "on" class on the toggle button
   toggleButtonAll.classList.toggle('on');
   saveButtonAction(toggleButtonAll);
+  sendUserSettings();
 });
 
 function saveButtonAction(element) {
@@ -86,33 +89,33 @@ function saveButtonAction(element) {
 }
 
 function sendUserSettings() {
-  msg = {
+  var msg = {
     type: "feature-settings",
-    shorts: False,
-    recommended: False,
-    all: False,
+    shorts: "off",
+    recommended: "off",
+    all: "off",
   }
   if (toggleButtonShorts.classList.contains('on')) {
-    console.log('Toggle button for shorts is toggled on');
-    msg.shorts = True
+    
+    msg.shorts = "on"
   } 
 
   if (toggleButtonRecs.classList.contains('on')) {
-    console.log('Toggle button for shorts is toggled on');
-    msg.recommended = True
+    
+    msg.recommended = "on"
   } 
 
   if (toggleButtonAll.classList.contains('on')) {
-    console.log('Toggle button for shorts is toggled on');
-    msg.all = True
+    
+    msg.all = "on"
   } 
-  chrome.tabs.query({url: "https://www.youtube.com*"}, function(tabs) {
+  chrome.tabs.query({url: "https://www.youtube.com/*"}, function(tabs) {
     // Send a message to the content script in each tab
+    
     tabs.forEach(function(tab) {
       chrome.tabs.sendMessage(tab.id, msg);
     });
   });
-  
 }
 
 //delete the href /shorts ytd-rich-section-renderer
