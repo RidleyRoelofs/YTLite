@@ -29,17 +29,7 @@
             window.location.href = redirLink;
             return ;
         } 
-        /*
-        var shortsLinkElement = Array.from(
-            document.getElementsByTagName('a')).find(a => a.href.includes('/shorts/')
-        );
-        while (!shortsLinkElement) {
-            await new Promise(resolve => setTimeout(resolve, 500));
-            shortsLinkElement = Array.from(
-                document.getElementsByTagName('a')).find(a => a.href.includes('/shorts/')
-            );
-        }
-*/
+
         var shortsContainers = Array.from(document.querySelectorAll('ytd-rich-shelf-renderer[is-shorts]'));
 
         while (!shortsContainers || shortsContainers.length < 2) {
@@ -48,7 +38,6 @@
 
         }
 
-        
         console.log(shortsContainers.length);
         var shortsContents = [];
         shortsContainers.forEach(function(element) {
@@ -63,56 +52,7 @@
         shortsContents.forEach(function(element) {
             element.style.display = "none";
         });
-        return ;
-
-        var parent = shortsLinkElement.parentElement;
-        console.log(parent);
-
-        while (parent && !(parent instanceof HTMLElement &&
-                           parent.tagName === 'DIV' &&
-                           //(! parent.classList.contains("style-scope ytd-rich-shelf-renderer")) &&
-                           parent.getAttribute("id") === "contents"
-                           ) ) {
-            parent = parent.parentElement;
-            console.log(parent);
-        }
         
-        const shortsVidsElement = parent;
-
-        if (shortsVidsElement) {
-            console.log("I'm about to do it mom");
-            console.log(shortsVidsElement);
-            //parent.remove();
-            shortsVidsElement.style.display = "none";
-        }
-
-        var sibling = parent;
-        while (sibling && !(sibling.tagName === 'DIV' &&
-                            sibling.getAttribute("id") === 'rich-shelf-header')) {
-            sibling = sibling.previousElementSibling;      
-        }
-        const shortsVidsHeader = sibling;
-        if (shortsVidsHeader) {
-            console.log("I'm about to do it mom");
-            console.log(shortsVidsHeader);
-            //parent.remove();
-            shortsVidsHeader.style.display = "none";
-        }
-
-        while (sibling && !(sibling.tagName === 'DIV' &&
-                            sibling.getAttribute("id") === 'button-container')) {
-            sibling = sibling.nextElementSibling;      
-        }
-
-        const shortsVidsFooter = sibling;
-        if (shortsVidsFooter) {
-            console.log("I'm about to do it mom");
-            console.log(shortsVidsFooter);
-            //parent.remove();
-            shortsVidsFooter.style.display = "none";
-        }
-        //WOW THEy PUT MULTIPLE SHORTS TABS IN THE RECOMENDED
-        //NEED to get the list of <a> elements and get them into non sibling groups
     }
 
     const updateDOM = (url) => {
