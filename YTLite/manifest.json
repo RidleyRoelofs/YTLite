@@ -16,7 +16,10 @@
     ],
     "web_accessible_resources": [
         {
-            "resources": [],
+            "resources": [
+                "assets/ext-icon.png",
+                "assets/redirect.html"
+            ],
             "matches": ["https://*.youtube.com/*"]
         }
     ],

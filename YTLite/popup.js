@@ -2,50 +2,51 @@
 const toggleButtonShorts = document.getElementById('toggle-button-shorts');
 const toggleButtonRecs = document.getElementById('toggle-button-recs');
 const toggleButtonAll = document.getElementById('toggle-button-all');
-const slideTime = 11
+const slideTime = 5
 
+chrome.storage.sync.get("buttonStateShorts", function(data) {
+  // If a button state was saved, set the toggle button to that state
+  if (data.buttonStateShorts) {
+    var before  = document.getElementById("toggle-button-shorts").style.display 
+    document.getElementById("toggle-button-shorts").style.display = "none";
+    document.getElementById("toggle-button-shorts").classList.add(data.buttonStateShorts);
+    
+    setTimeout(() => {
+      document.getElementById("toggle-button-shorts").style.display = before;
+    }, slideTime);
+
+    
+  }
+});
+
+chrome.storage.sync.get("buttonStateRecs", function(data) {
+  // If a button state was saved, set the toggle button to that state
+  if (data.buttonStateRecs) {
+    var before  = document.getElementById("toggle-button-recs").style.display
+    document.getElementById("toggle-button-recs").style.display = "none";
+    document.getElementById("toggle-button-recs").classList.add(data.buttonStateRecs);
+
+    setTimeout(() => {
+      document.getElementById("toggle-button-recs").style.display = before;
+    }, slideTime);
+  }
+});
+
+chrome.storage.sync.get("buttonStateAll", function(data) {
+  // If a button state was saved, set the toggle button to that state
+  if (data.buttonStateAll) {
+    var before  = document.getElementById("toggle-button-all").style.display
+    document.getElementById("toggle-button-all").style.display = "none";
+    document.getElementById("toggle-button-all").classList.add(data.buttonStateAll);
+
+    setTimeout(() => {
+      document.getElementById("toggle-button-all").style.display = before;
+    }, slideTime);
+  }
+});
 document.addEventListener("DOMContentLoaded", function() {
 
-  chrome.storage.sync.get("buttonStateShorts", function(data) {
-    // If a button state was saved, set the toggle button to that state
-    if (data.buttonStateShorts) {
-      var before  = document.getElementById("toggle-button-shorts").style.display 
-      document.getElementById("toggle-button-shorts").style.display = "none";
-      document.getElementById("toggle-button-shorts").classList.add(data.buttonStateShorts);
-      
-      setTimeout(() => {
-        document.getElementById("toggle-button-shorts").style.display = before;
-      }, slideTime);
-
-      
-    }
-  });
-
-  chrome.storage.sync.get("buttonStateRecs", function(data) {
-    // If a button state was saved, set the toggle button to that state
-    if (data.buttonStateRecs) {
-      var before  = document.getElementById("toggle-button-recs").style.display
-      document.getElementById("toggle-button-recs").style.display = "none";
-      document.getElementById("toggle-button-recs").classList.add(data.buttonStateRecs);
-
-      setTimeout(() => {
-        document.getElementById("toggle-button-recs").style.display = before;
-      }, slideTime);
-    }
-  });
-
-  chrome.storage.sync.get("buttonStateAll", function(data) {
-    // If a button state was saved, set the toggle button to that state
-    if (data.buttonStateAll) {
-      var before  = document.getElementById("toggle-button-all").style.display
-      document.getElementById("toggle-button-all").style.display = "none";
-      document.getElementById("toggle-button-all").classList.add(data.buttonStateAll);
-
-      setTimeout(() => {
-        document.getElementById("toggle-button-all").style.display = before;
-      }, slideTime);
-    }
-  });
+  
 
   //sendUserSettings();
 });
