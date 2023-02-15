@@ -4,41 +4,63 @@
         recommended: "off",
         all: "off",
     }
-
+    
+    const observer = new MutationObserver((mutationsList, observer) => {
+        
+        updateDOM(window.location.href);
+        
+      });
+      
+    // configure the observer to watch for changes to the DOM tree
+    const config = { childList: true, subtree: true };
+      
+    // start observing the target node for DOM changes
+    observer.observe(document.body, config);
+    
     chrome.runtime.onMessage.addListener((obj, sender, response) => {
+        
         const {type, shorts, recommended, all, url} = obj;
 
         if (type === "feature-settings") {
+            
             myPreferenceState = {
                 shorts: shorts,
                 recommended: recommended,
                 all: all,
             }
+
             updateDOM(url);
+
+            location.reload();
         }
     });
-    const curateShorts = async (url) => {
+    const curateRecommended = async (url) => {
         
+    }
+    const curateShorts = async (url) => {
+        var turn_off = true;
         if (myPreferenceState.shorts === "off") {
-            console.log("I think shorts are enabled");
-            return ;
+            turn_off = false;
         }
-        if (url.includes("shorts")) {
+        if (turn_off && url.includes("shorts")) {
             var redirLink = chrome.runtime.getURL("assets/redirect.html");
-            console.log(redirLink);
             window.location.href = redirLink;
             return ;
         } 
-
+        
         var shortsContainers = Array.from(document.querySelectorAll('ytd-rich-shelf-renderer[is-shorts]'));
-
-        while (!shortsContainers || shortsContainers.length < 2) {
+        
+        var num_tries = 0
+        const max_tries = 2;
+        while ((!shortsContainers && num_tries < max_tries) || num_tries < max_tries) {
             await new Promise(resolve => setTimeout(resolve, 500));
             shortsContainers = Array.from(document.querySelectorAll('ytd-rich-shelf-renderer[is-shorts]'));
-
+            num_tries  = num_tries + 1;
         }
-
-        console.log(shortsContainers.length);
+        if (!shortsContainers) {
+            return ;
+        }
+        
         var shortsContents = [];
         shortsContainers.forEach(function(element) {
             const contentsDiv = element.querySelector('div#contents');
@@ -50,22 +72,28 @@
         });
 
         shortsContents.forEach(function(element) {
-            element.style.display = "none";
+            if (turn_off) {
+                
+                element.style.display = "none";
+            } 
+            
         });
         
     }
 
-    const updateDOM = (url) => {
-        console.log("updating dom you fuck");
+    const updateDOM = (url, callback=null) => {
+        
         curateShorts(url);
+
+        if(callback) {
+            callback();
+        }
     }
     const initializePage = () => {
         
         chrome.storage.sync.get("buttonStateShorts", function(data) {
             // If a button state was saved, set the toggle button to that state
             if (data.buttonStateShorts) {
-                console.log("I set shorts state to");
-                console.log(data.buttonStateShorts);
                 myPreferenceState.shorts = data.buttonStateShorts;
             }
             chrome.storage.sync.get("buttonStateRecs", function(data) {

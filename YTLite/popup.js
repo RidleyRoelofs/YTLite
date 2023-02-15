@@ -44,12 +44,6 @@ chrome.storage.sync.get("buttonStateAll", function(data) {
     }, slideTime);
   }
 });
-document.addEventListener("DOMContentLoaded", function() {
-
-  
-
-  //sendUserSettings();
-});
 
 
 toggleButtonShorts.addEventListener('click', () => {
@@ -70,7 +64,7 @@ toggleButtonAll.addEventListener('click', () => {
   // Toggle the "on" class on the toggle button
   toggleButtonAll.classList.toggle('on');
   saveButtonAction(toggleButtonAll);
-  sendUserSettings();
+  updateYoutubeAccess();
 });
 
 function saveButtonAction(element) {
@@ -91,6 +85,69 @@ function saveButtonAction(element) {
   }
 }
 
+
+function closeTabsAndSaveInfo(tabs) {
+  console.log("got to close tabs func");
+  let closedTabList = [];
+  tabs.forEach(function(tab) {
+    const windowId = tab.windowId;
+    const url = tab.url;
+    closedTabList.push({windowId: windowId, url: url});
+  });
+  tabs.forEach(function(tab) {
+    const windowId = tab.windowId;
+    const url = tab.url;
+    chrome.tabs.remove(tab.id, function() {});
+  });
+  chrome.storage.sync.set({closedYtTabs: JSON.stringify(closedTabList)});
+  
+}
+
+function reopenClosedTabs() {
+  chrome.storage.sync.get("closedYtTabs", function(data) {
+    console.log("got to reopen func")
+    if (data.closedYtTabs) {
+      var theTabList = JSON.parse(data.closedYtTabs);
+      console.log(theTabList);
+      if (theTabList.length === 0) {
+        return;
+      }
+      chrome.windows.getAll({populate: true}, function(windows) {
+        var newWindows = [];
+        for (const closedTabInfo of theTabList) {
+          const window = windows.find(window => window.id === closedTabInfo.windowId);
+          if (!window) {
+            var newWindow = true;
+            var newWindowInd = -1;
+            var i = 0;
+            newWindows.forEach(function(winInfo) {
+              if (winInfo.oldWid === closedTabInfo.windowId) {
+                newWindow = false;
+                newWindowInd = i;
+              }
+              i += 1;
+            });
+
+            if (newWindow) {
+              chrome.windows.create({url: closedTabInfo.url}, function(window) {
+                newWindows.push({oldWid: closedTabInfo.windowId, newWid: window.id});
+              });
+            } else {
+              newWinInfo = newWindows[newWindowInd];
+              chrome.tabs.create({url: closedTabInfo.url, windowId: winInfo.newWid, active: false});
+            }
+            return;
+          }
+          chrome.tabs.create({url: closedTabInfo.url, windowId: closedTabInfo.windowId, active: false});
+      
+        }
+    
+      });
+    }
+  });
+      
+}
+
 function sendUserSettings() {
   var msg = {
     type: "feature-settings",
@@ -100,22 +157,18 @@ function sendUserSettings() {
     url: "",
   }
   if (toggleButtonShorts.classList.contains('on')) {
-    
     msg.shorts = "on"
   } 
 
   if (toggleButtonRecs.classList.contains('on')) {
-    
     msg.recommended = "on"
   } 
 
   if (toggleButtonAll.classList.contains('on')) {
-    
     msg.all = "on"
   } 
   chrome.tabs.query({url: "https://www.youtube.com/*"}, function(tabs) {
     // Send a message to the content script in each tab
-    
     tabs.forEach(function(tab) {
       msg.url = tab.url
       chrome.tabs.sendMessage(tab.id, msg);
@@ -123,4 +176,22 @@ function sendUserSettings() {
   });
 }
 
-//delete the href /shorts ytd-rich-section-renderer
+function updateYoutubeAccess() {
+  //await new Promise(resolve => setTimeout(resolve, 100));
+  var allowYT = true;
+  if (toggleButtonAll.classList.contains('on')) {
+    allowYT = false;
+  }
+  if (allowYT) {
+    reopenClosedTabs();
+    return;
+  }
+  chrome.tabs.query({url: "https://www.youtube.com/*"}, function(tabs) {
+    closeTabsAndSaveInfo(tabs);
+  });
+}
+
+//TODO: add listener to update youtube access that stop new tabs
+// TODO: remove the shorts button from the youtube menu
+// TODO: remove recomended from home page and video player
+// TODO: right now I have the tab that i am on refreshing when the button state changes, but I need to refresh every single youtube tab....

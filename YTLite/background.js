@@ -7,6 +7,6 @@ chrome.tabs.onUpdated.addListener((tabId, tab) => {
         all: "off",
         url: tab.url,
       }
-      console.log("youtube page")
+      
     }
   });
