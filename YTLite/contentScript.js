@@ -58,7 +58,7 @@
             num_tries  = num_tries + 1;
         }
         if (!shortsContainers) {
-            return ;
+            return ; 
         }
         
         var shortsContents = [];

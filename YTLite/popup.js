@@ -64,7 +64,7 @@ toggleButtonAll.addEventListener('click', () => {
   // Toggle the "on" class on the toggle button
   toggleButtonAll.classList.toggle('on');
   saveButtonAction(toggleButtonAll);
-  updateYoutubeAccess();
+  
 });
 
 function saveButtonAction(element) {
@@ -78,7 +78,10 @@ function saveButtonAction(element) {
       chrome.storage.sync.set({buttonStateRecs: buttonState});
       break;
     case "toggle-button-all":
-      chrome.storage.sync.set({buttonStateAll: buttonState});
+      chrome.storage.sync.set({buttonStateAll: buttonState}, function() {
+        chrome.runtime.sendMessage({action: 'toggle-blocking', state: buttonState});
+        updateYoutubeAccess();
+      }); 
       break;
     default: 
       console.log(`Error: not a valid element id: ${element.id}.`);
@@ -170,14 +173,14 @@ function sendUserSettings() {
   chrome.tabs.query({url: "https://www.youtube.com/*"}, function(tabs) {
     // Send a message to the content script in each tab
     tabs.forEach(function(tab) {
-      msg.url = tab.url
+      msg.url = tab.url;
       chrome.tabs.sendMessage(tab.id, msg);
     });
   });
 }
 
 function updateYoutubeAccess() {
-  //await new Promise(resolve => setTimeout(resolve, 100));
+  
   var allowYT = true;
   if (toggleButtonAll.classList.contains('on')) {
     allowYT = false;
