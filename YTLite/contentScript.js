@@ -36,6 +36,25 @@
     });
     const curateRecommended = async (url) => {
         
+        if (myPreferenceState.recommended === "off") {
+            return ;
+        }
+        
+        let itemsDiv = null;
+        
+        if (url === "https://www.youtube.com/") {
+            itemsDiv = document.getElementById("contents");
+            if(itemsDiv != null)
+                itemsDiv.remove();
+                //itemsDiv.style.display = "none";
+            
+        } else if (url.includes("watch")) {
+            itemsDiv = document.getElementById("items");
+            if(itemsDiv != null)
+                itemsDiv.remove();
+            //itemsDiv.style.display = "none";
+        }
+        
     }
     const curateShorts = async (url) => {
         var turn_off = true;
@@ -47,7 +66,9 @@
             window.location.href = redirLink;
             return ;
         } 
-        
+        if (!turn_off) {
+            return ;
+        }
         var shortsContainers = Array.from(document.querySelectorAll('ytd-rich-shelf-renderer[is-shorts]'));
         
         var num_tries = 0
@@ -84,7 +105,7 @@
     const updateDOM = (url, callback=null) => {
         
         curateShorts(url);
-
+        curateRecommended(url);
         if(callback) {
             callback();
         }

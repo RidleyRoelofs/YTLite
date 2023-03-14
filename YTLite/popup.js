@@ -194,7 +194,6 @@ function updateYoutubeAccess() {
   });
 }
 
-//TODO: add listener to update youtube access that stop new tabs
-// TODO: remove the shorts button from the youtube menu
+
 // TODO: remove recomended from home page and video player
 // TODO: right now I have the tab that i am on refreshing when the button state changes, but I need to refresh every single youtube tab....
