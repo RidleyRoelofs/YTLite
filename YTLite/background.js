@@ -24,7 +24,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 chrome.webNavigation.onBeforeNavigate.addListener(function(details) {
   // Check blocking state before redirecting
-  if (isBlockingEnabled && details.url.indexOf('www.youtube.com') !== -1) {
+  if (isBlockingEnabled && details.url.includes('www.youtube.com')) {
     var redirLink = chrome.runtime.getURL("assets/redirect_youtube.html");
     chrome.tabs.update(details.tabId, {url: redirLink});
   }
