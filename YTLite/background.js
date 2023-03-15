@@ -26,11 +26,7 @@ chrome.webNavigation.onBeforeNavigate.addListener(function(details) {
   // Check blocking state before redirecting
   if (isBlockingEnabled && details.url.includes('youtube.com/') && ! details.url.includes('/embed/')) {
     var redirLink = chrome.runtime.getURL("assets/redirect_youtube.html");
-    console.log(details.url);
-    console.log(details.tabId);
     chrome.tabs.update(details.tabId, {url: redirLink});
-    
-    
   }
 }, {url: [{hostSuffix: 'youtube.com'}]});
 
